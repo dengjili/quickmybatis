@@ -1,6 +1,9 @@
 package dengjili.quickmybatis;
 
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -29,10 +32,19 @@ public class BlogMapperTest2 {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			BlogMapper mapper = session.getMapper(BlogMapper.class);
-			Blog blog = mapper.selectBlog(1);
-			log.error(blog.getName());
-		} finally {
 			
+		/*	Blog blog = new Blog();
+			blog.setId(1);
+			blog.setName("fuck");
+			mapper.updateBlog(blog);
+			
+			
+			
+			session.commit();*/
+			
+			List<Blog> selectAll = mapper.selectAll();
+			log.error(selectAll);
+		} finally {
 			session.close();
 		}
 	}

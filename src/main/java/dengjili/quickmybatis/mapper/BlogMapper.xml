@@ -3,12 +3,30 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dengjili.quickmybatis.mapper.BlogMapper">
-  <select id="selectBlog" resultType="dengjili.quickmybatis.pojo.Blog">
+
+  <resultMap type="Blog" id="ListBlog">
+      <id property="id" column="id"/>
+      <result property="name" column="name"/>
+  </resultMap>
+
+  <select id="selectAll" resultMap="ListBlog">
+    select * from Blog
+  </select>
+
+  <select id="selectBlog" resultType="Blog">
     select * from Blog where id = #{id}
   </select>
   
-  <insert id="addBlog" parameterType="dengjili.quickmybatis.pojo.Blog" useGeneratedKeys="true" keyProperty="id">
+  <insert id="addBlog" parameterType="Blog">
   	insert into blog(name) values(#{name})
   </insert>
+  
+  <update id="deleteBlog" parameterType="int">
+  	delete from Blog where id = #{id}
+  </update>
+  
+  <delete id="updateBlog" parameterType="Blog">
+  	update Blog set name = #{name} where id = #{id}
+  </delete>
   
 </mapper>

@@ -5,6 +5,12 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<properties resource="mysql.properties"></properties>
+	
+	<!-- 别名（放在environments属性的之前，之后报错）, 忽略大小写 -->
+	<typeAliases>
+		<!-- <typeAlias type="dengjili.quickmybatis.pojo.Blog"/> -->
+		<package name="dengjili.quickmybatis.pojo"/>
+	</typeAliases>
 
 	<environments default="development">
 		<environment id="development">
@@ -17,8 +23,12 @@
 			</dataSource>
 		</environment>
 	</environments>
-
+	
+	
+	<!-- 映射器 -->
 	<mappers>
 		<package name="dengjili.quickmybatis.mapper" />
 	</mappers>
+	
+	
 </configuration>

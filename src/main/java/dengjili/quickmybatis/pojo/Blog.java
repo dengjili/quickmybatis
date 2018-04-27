@@ -21,4 +21,9 @@ public class Blog {
 		this.name = name;
 	}
 
+	@Override
+	public String toString() {
+		return "Blog [id=" + id + ", name=" + name + "]";
+	}
+
 }
