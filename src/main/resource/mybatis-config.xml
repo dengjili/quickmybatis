@@ -4,16 +4,43 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
+	<!-- 注意configuration中各个属性配置的顺序应为：
+	properties,settings,typeAliases,typeHandlers,objectFactory,objectWrapperFactory,
+	reflectorFactory,plugins,environments,databaseIdProvider,mappers)-->
 	<properties resource="mysql.properties"></properties>
+	
+	<settings>
+		<setting name="logImpl" value="LOG4J"/>
+	</settings>
 	
 	<!-- 别名（放在environments属性的之前，之后报错）, 忽略大小写 -->
 	<typeAliases>
 		<!-- <typeAlias type="dengjili.quickmybatis.pojo.Blog"/> -->
 		<package name="dengjili.quickmybatis.pojo"/>
 	</typeAliases>
+	
+	<typeHandlers>
+		<package name="dengjili.quickmybatis.handlers"/>
+	</typeHandlers>
+	
+	<objectFactory type="dengjili.quickmybatis.factory.MyObjectFactory">
+		<property name="test" value="邓吉利"/>
+		<property name="someProperty" value="100"/>
+	</objectFactory>
+	
 
 	<environments default="development">
 		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+		<environment id="mysql">
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
 				<property name="driver" value="${driver}" />

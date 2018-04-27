@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dengjili.quickmybatis.mapper.PersonMapper">
+
+	<sql id="userColumns">
+		${alias}.id,${alias}.name,${alias}.password
+	</sql>
+	
+	<sql id="blogColumns">
+		${alias}.id,${alias}.name
+	</sql>
+
+	<resultMap type="Person" id="hashMap">
+		<constructor>
+			<idArg column="id" javaType="int" />
+			<arg column="name" javaType="String" />
+			<arg column="password" javaType="String" />
+		</constructor>
+
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="password" column="password" />
+	</resultMap>
+
+	<resultMap type="Person" id="PersonMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="password" column="password" />
+
+		<association property="blog" javaType="Blog">
+			<id property="id" column="id" />
+			<result property="name" column="name" />
+		</association>
+	</resultMap>
+	
+	<resultMap type="Person" id="PersonMap2">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="password" column="password" />
+
+		<collection property="blogs" ofType="Blog">
+			<id property="id" column="id" />
+			<result property="name" column="name" />
+		</collection>
+	</resultMap>
+
+	<select id="selectPerson" parameterType="int" resultType="hashMap">
+		SELECT
+		<include refid="userColumns">
+			<property name="alias" value="PERSON" />
+		</include>
+		FROM PERSON WHERE ID = #{id}
+	</select>
+	
+	<select id="selectPerson2" parameterType="int" resultMap="PersonMap">
+		SELECT
+		<include refid="userColumns">
+			<property name="alias" value="t1" />
+		</include> ,  
+		<include refid="blogColumns">
+			<property name="alias" value="t2" />
+		</include> 
+		FROM PERSON t1, BLOG t2 WHERE t1.id = t2.id and t1.ID = #{id}
+	</select>
+	
+	<select id="selectPerson3" parameterType="int" resultMap="PersonMap2">
+		SELECT
+		<include refid="userColumns">
+			<property name="alias" value="t1" />
+		</include> ,  
+		<include refid="blogColumns">
+			<property name="alias" value="t2" />
+		</include> 
+		FROM PERSON t1, BLOG t2 WHERE t1.id = t2.id and t1.ID = #{id}
+	</select>
+
+	<select id="selectPersonMap" parameterType="int" resultType="map">
+		SELECT
+		<include refid="userColumns">
+			<property name="alias" value="PERSON" />
+		</include>
+		FROM PERSON WHERE ID = #{id}
+	</select>
+
+	<select id="selectPersons" parameterType="java.util.List"
+		resultType="hashMap">
+		SELECT * FROM PERSON WHERE ID in (
+		<foreach item="item" collection="list" separator=",">
+			(#{item})
+		</foreach>
+		)
+	</select>
+
+	<insert id="insertPerson" useGeneratedKeys="true" keyProperty="id">
+		insert into PERSON (name,password)
+		values (#{name},#{password})
+	</insert>
+
+	<insert id="insertPersons" useGeneratedKeys="true" keyProperty="id">
+		insert into PERSON (name,password) values
+		<foreach item="item" collection="list" separator=",">
+			(#{item.name}, #{item.password})
+		</foreach>
+	</insert>
+</mapper>

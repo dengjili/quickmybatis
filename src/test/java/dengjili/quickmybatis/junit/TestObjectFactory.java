@@ -1,4 +1,4 @@
-package dengjili.quickmybatis.utils;
+package dengjili.quickmybatis.junit;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,11 +9,14 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.log4j.Logger;
 
-public class SessionFactory {
-	
-	private final static Logger log = Logger.getLogger(SessionFactory.class);
+import dengjili.quickmybatis.factory.MyObjectFactory;
+import dengjili.quickmybatis.pojo.User;
 
-	public static SqlSession create() {
+public class TestObjectFactory {
+	
+	private final static Logger log = Logger.getLogger(TestObjectFactory.class);
+
+	public static void main(String[] args) {
 		String resource = "mybatis-config.xml";
 		InputStream inputStream = null;
 		try {
@@ -22,13 +25,11 @@ public class SessionFactory {
 			log.error(e.getMessage());
 		}
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-		SqlSession session = sqlSessionFactory.openSession(true);
-		return session;
-	}
-	
-	public void forTest() {
-		//Resources.getResourceAsStream(resource)
+		SqlSession openSession = sqlSessionFactory.openSession();
 		
+		MyObjectFactory factory = new MyObjectFactory();
+		User create = factory.create(User.class);
+		log.error(create);
 	}
 
 }

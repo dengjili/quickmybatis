@@ -13,7 +13,7 @@
     select * from Blog
   </select>
 
-  <select id="selectBlog" resultType="Blog">
+  <select id="selectBlog" resultType="Blog" >
     select * from Blog where id = #{id}
   </select>
   

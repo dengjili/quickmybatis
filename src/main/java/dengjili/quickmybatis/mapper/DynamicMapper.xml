@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dengjili.quickmybatis.mapper.DynamicMapper">
+
+	<resultMap type="Dynamic" id="DynamicMap">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="price" property="price"/>
+		<result column="birth" property="birth"/>
+		<result column="desc" property="desc"/>
+	</resultMap>
+	
+	
+	<select id="selectDynamic" resultMap="DynamicMap">
+		select * from Dynamic
+		<where>
+			<if test="id != 0">
+				id = #{id}
+			</if>
+			<if test="name != null">
+				name = #{name}
+			</if>
+			<if test="desc != null">
+				desc = #{desc}
+			</if>
+		</where>
+		
+	</select>
+	
+	<select id="selectDynamic2" resultMap="DynamicMap">
+		select * from Dynamic where id in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+		
+	</select>
+	
+	<update id="updateDynamic">
+		update Dynamic
+		<set>
+			<if test="name != null">
+				name = #{name}
+			</if>
+			<if test="birth != null">
+				birth = #{birth}
+			</if>
+			<if test="desc != null">
+				desc = #{desc}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+</mapper>
